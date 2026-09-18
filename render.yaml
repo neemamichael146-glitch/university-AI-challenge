@@ -9,9 +9,7 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: chuoai-db
-          property: connectionString
+        sync: false
       - key: SECRET_KEY
         generateValue: true
       - key: JWT_SECRET
@@ -25,7 +23,7 @@ services:
       - key: REDIS_URL
         value: redis://localhost:6379
       - key: CORS_ORIGINS
-        value: '["https://chuoai-frontend.onrender.com"]'
+        value: '["https://chuoaichallenge-1.onrender.com"]'
 
   - type: web
     name: chuoai-frontend
@@ -37,9 +35,3 @@ services:
     envVars:
       - key: NEXT_PUBLIC_API_URL
         value: https://chuoai-backend.onrender.com/api
-
-databases:
-  - name: chuoai-db
-    plan: free
-    databaseName: chuoai
-    user: chuoai
