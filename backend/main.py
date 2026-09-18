@@ -1,17 +1,18 @@
 import uvicorn
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
-# Import your FastAPI instance directly from app/main.py
-from app.main import app
+# 1. Initialize FastAPI instance directly in backend/main.py
+app = FastAPI(title="ChuoAI API")
 
-# 1. Allow all host headers to fix 400 Bad Request on Render health checks
+# 2. Allow all host headers to fix Render 400 errors
 app.add_middleware(
-    TrustedHostMiddleware, 
+    TrustedHostMiddleware,
     allowed_hosts=["*"]
 )
 
-# 2. Allow CORS requests from your Next.js frontend
+# 3. Configure CORS origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,7 +21,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 4. Root & Health Check Endpoints
+@app.get("/")
+@app.head("/")
+def read_root():
+    return {"message": "ChuoAI API is live and running!"}
+
+@app.get("/api/health")
+def health_check():
+    return {"status": "healthy"}
+
 if __name__ == "__main__":
     from app.core.config import settings
-    # Point Uvicorn to 'app.main:app' so it matches the directory structure
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=settings.DEBUG)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=settings.DEBUG)
