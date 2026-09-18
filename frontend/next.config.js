@@ -4,6 +4,16 @@ const nextConfig = {
   images: {
     domains: ['localhost'],
   },
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        'localhost:3000',
+        '*.onrender.com',
+        'chuoaichallenge-1.onrender.com',
+        'chuoai-backend.onrender.com',
+      ],
+    },
+  },
   async rewrites() {
     return [
       {
