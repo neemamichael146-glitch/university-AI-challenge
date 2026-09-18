@@ -35,3 +35,4 @@ class Document(Base):
 
     uploaded_by_id = Column(String(36), ForeignKey("users.id"), nullable=True)
     faq_id = Column(String(36), ForeignKey("faqs.id"), nullable=True)
+    faq = relationship("FAQ", back_populates="documents")
